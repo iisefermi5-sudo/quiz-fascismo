@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#111714">
   <title>Il fascismo in Italia | Quiz di storia</title>
-   <link rel="stylesheet" href="style.css?v=2">
+   <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <main class="page">
@@ -16,7 +16,27 @@
       <a class="admin-link" href="index.html">Torna alla pagina iniziale</a>
     </header>
 
-    <section class="quiz" id="quiz" aria-labelledby="question">
+    <section class="participant-card" id="participant-card" hidden>
+      <h2>Prima di iniziare</h2>
+      <p>Inserisci nome e cognome. Le risposte e il punteggio saranno inviati al foglio del creatore del quiz.</p>
+      <form id="participant-form">
+        <label class="form-field">
+          Nome
+          <input id="participant-first-name" name="firstName" type="text" maxlength="80" autocomplete="given-name" required>
+        </label>
+        <label class="form-field">
+          Cognome
+          <input id="participant-last-name" name="lastName" type="text" maxlength="80" autocomplete="family-name" required>
+        </label>
+        <label class="consent-choice">
+          <input id="participant-consent" type="checkbox" required>
+          <span>Ho letto l’informativa e acconsento all’invio di nome, cognome e risposte per la correzione.</span>
+        </label>
+        <button class="next-button" type="submit">Inizia il quiz</button>
+      </form>
+    </section>
+
+    <section class="quiz" id="quiz" aria-labelledby="question" hidden>
       <div class="status-row" aria-live="polite">
         <span id="progress-label">Domanda 1 di 10</span>
         <span>Punteggio <strong id="score">0</strong></span>
@@ -50,6 +70,7 @@
       <h2>Il tuo risultato</h2>
       <p class="result-score" id="final-score"></p>
       <p class="result-copy" id="result-copy"></p>
+      <p class="submission-status" id="submission-status" role="status" aria-live="polite" hidden></p>
       <button class="restart-button" id="restart-button" type="button"><span aria-hidden="true">↻</span> Ricomincia</button>
     </section>
 
@@ -58,6 +79,7 @@
     </footer>
   </main>
 
-  <script src="script.js?v=2" defer></script>
+  <script src="apps-script-client.js?v=4" defer></script>
+  <script src="script.js?v=4" defer></script>
 </body>
 </html>

@@ -5,16 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#111714">
   <title>Gestione quiz | Quiz di storia</title>
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <main class="page manager-page">
     <header>
       <p class="eyebrow">Area di gestione</p>
       <h1>Crea il tuo quiz</h1>
-      <p class="intro">Aggiungi domande, risposte e spiegazioni, poi condividi il quiz con un link.</p>
+      <p class="intro">Aggiungi domande, risposte e spiegazioni. Collega Google Sheets per raccogliere i risultati dei partecipanti.</p>
       <a class="admin-link" href="index.html">Torna alla pagina iniziale</a>
     </header>
+
+    <section class="backend-settings" aria-labelledby="backend-heading">
+      <h2 id="backend-heading">Collega Google Sheets</h2>
+      <p>Le risposte dei partecipanti saranno salvate in un foglio Google privato. Il codice docente serve per leggere i risultati e non viene salvato nel browser.</p>
+      <label class="form-field" for="apps-script-url">
+        URL della web app Apps Script
+        <input id="apps-script-url" type="url" autocomplete="url" placeholder="https://script.google.com/macros/s/…/exec">
+      </label>
+      <div class="backend-actions">
+        <button class="secondary-button" id="save-backend" type="button">Salva URL</button>
+        <label class="form-field admin-code-field" for="admin-token">
+          Codice docente
+          <input id="admin-token" type="password" autocomplete="off">
+        </label>
+        <button class="secondary-button" id="load-responses" type="button">Mostra risposte</button>
+      </div>
+      <p class="save-status" id="backend-status" role="status" aria-live="polite"></p>
+      <section id="responses-panel" class="responses-panel" aria-label="Risposte dei partecipanti" hidden>
+        <h3>Risposte ricevute</h3>
+        <div id="responses-list"></div>
+      </section>
+    </section>
 
     <div class="manager-layout">
       <aside class="quiz-library" aria-label="I miei quiz">
@@ -23,7 +45,7 @@
           <button class="secondary-button" id="new-quiz" type="button">Nuovo</button>
         </div>
         <nav class="quiz-list" id="quiz-list" aria-label="Seleziona un quiz"></nav>
-        <p class="storage-note">I quiz salvati sono disponibili solo in questo browser. Il link condiviso contiene una copia dei dati.</p>
+        <p class="storage-note">I quiz salvati sono disponibili solo in questo browser. Con Google Sheets collegato, le risposte inviate vengono raccolte nel tuo foglio.</p>
       </aside>
 
       <section class="manager-editor" aria-label="Editor del quiz">
@@ -62,7 +84,7 @@
 
           <section class="share-panel" id="share-panel" aria-labelledby="share-heading" hidden>
             <h2 id="share-heading">Link del quiz</h2>
-            <p>Chi apre il link vedrà questa versione del quiz. Le modifiche successive non aggiornano i link già condivisi.</p>
+            <p>Chi apre il link inserirà nome e cognome. Le sue risposte e il punteggio saranno registrati nel tuo foglio Google.</p>
             <label class="form-field">
               Link da condividere
               <input id="share-url" type="url" readonly>
@@ -77,7 +99,8 @@
     </div>
   </main>
 
-  <script src="script.js?v=2" defer></script>
-  <script src="gestione.js?v=2" defer></script>
+  <script src="apps-script-client.js?v=4" defer></script>
+  <script src="script.js?v=4" defer></script>
+  <script src="gestione.js?v=4" defer></script>
 </body>
 </html>
