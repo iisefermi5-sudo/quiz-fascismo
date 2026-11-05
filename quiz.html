@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111714">
+  <title>Il fascismo in Italia | Quiz di storia</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow" id="quiz-eyebrow">Quiz di storia · Italia 1919–1945</p>
+      <h1 id="quiz-title">Il fascismo e l’Italia di Mussolini</h1>
+      <p class="intro" id="quiz-intro">Dieci domande per ripercorrere l’ascesa del fascismo, la dittatura e la guerra. Leggi le spiegazioni dopo ogni risposta.</p>
+      <a class="admin-link" href="index.html">Torna alla pagina iniziale</a>
+    </header>
+
+    <section class="quiz" id="quiz" aria-labelledby="question">
+      <div class="status-row" aria-live="polite">
+        <span id="progress-label">Domanda 1 di 10</span>
+        <span>Punteggio <strong id="score">0</strong></span>
+      </div>
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label="Avanzamento del quiz"
+        aria-valuemin="0"
+        aria-valuemax="10"
+        aria-valuenow="0"
+        id="progress-bar"
+      >
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <div class="question-area" id="question-area">
+        <p class="question-number" id="question-number">Domanda 01</p>
+        <h2 id="question" tabindex="-1"></h2>
+        <div class="answers" id="answers"></div>
+        <div class="explanation" id="explanation" role="status" hidden></div>
+        <div class="actions">
+          <button class="next-button" id="next-button" type="button" hidden>Prossima domanda <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="result" id="result" aria-live="polite" hidden>
+      <div class="result-mark" aria-hidden="true">✦</div>
+      <p class="eyebrow" style="justify-content:center">Quiz completato</p>
+      <h2>Il tuo risultato</h2>
+      <p class="result-score" id="final-score"></p>
+      <p class="result-copy" id="result-copy"></p>
+      <button class="restart-button" id="restart-button" type="button"><span aria-hidden="true">↻</span> Ricomincia</button>
+    </section>
+
+    <footer id="quiz-footer">
+      Il quiz presenta i fatti in forma sintetica: le spiegazioni non esauriscono la complessità del periodo. Il regime fascista fu una dittatura responsabile della repressione delle libertà, della persecuzione razziale e della guerra.
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

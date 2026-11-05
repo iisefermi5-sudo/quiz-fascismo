@@ -128,11 +128,12 @@ function showResult() {
   questionArea.hidden = true;
   resultElement.hidden = false;
   finalScoreElement.textContent = `${score} / ${questions.length} risposte corrette`;
-  resultCopyElement.textContent = score === questions.length
+  const resultSummary = score === questions.length
     ? "Ottima conoscenza dei passaggi principali. Continua ad approfondire le fonti e il contesto storico."
     : score >= 7
       ? "Buona preparazione: hai ricostruito molti snodi del periodo. Le spiegazioni possono aiutarti a fissare gli altri."
       : "Un primo ripasso utile: rileggi le spiegazioni e prova di nuovo per consolidare la cronologia e il contesto.";
+  resultCopyElement.textContent = `${resultSummary} Il risultato resta su questo dispositivo e non viene inviato al creatore.`;
   restartButton.focus();
 }
 

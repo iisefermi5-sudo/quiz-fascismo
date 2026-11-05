@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111714">
+  <title>Quiz di storia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page home-page">
+    <header>
+      <p class="eyebrow">Quiz di storia</p>
+      <h1>Crea e condividi i tuoi quiz</h1>
+      <p class="intro">Prepara un quiz da assegnare oppure rispondi a quello che hai ricevuto.</p>
+    </header>
+
+    <div class="home-actions">
+      <section class="home-card">
+        <p class="eyebrow">Per chi insegna o crea</p>
+        <h2>Crea un quiz</h2>
+        <p>Aggiungi domande, risposte corrette e spiegazioni. Poi condividi il link con chi deve svolgerlo.</p>
+        <a class="next-button home-button" href="gestione.html">Apri la gestione quiz</a>
+      </section>
+
+      <section class="home-card">
+        <p class="eyebrow">Per chi ha ricevuto un compito</p>
+        <h2>Rispondi a un quiz assegnato</h2>
+        <p>Incolla il link del quiz che ti è stato assegnato. Il risultato sarà visibile solo su questo dispositivo.</p>
+        <form id="assigned-quiz-form">
+          <label class="form-field" for="assigned-quiz-url">
+            Link del quiz
+            <input id="assigned-quiz-url" name="quizUrl" type="url" autocomplete="url" required
+              placeholder="https://…/quiz.html#quiz=…">
+          </label>
+          <p class="form-error" id="assigned-quiz-error" role="alert" hidden></p>
+          <button class="next-button home-button" type="submit">Apri il quiz assegnato</button>
+        </form>
+      </section>
+    </div>
+
+    <p class="home-note">I quiz e i risultati non vengono inviati a un server. Il creatore non può vedere le risposte dei partecipanti.</p>
+  </main>
+  <script src="home.js" defer></script>
+</body>
+</html>

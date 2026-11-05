@@ -335,7 +335,7 @@ document.getElementById("share-quiz").addEventListener("click", () => {
     intro: quiz.intro.trim(),
     questions: quiz.questions
   };
-  const quizUrl = new URL("quiz-fascismo.html", window.location.href);
+  const quizUrl = new URL("quiz.html", window.location.href);
   quizUrl.hash = `quiz=${encodeQuiz(shareQuiz)}`;
   shareUrlInput.value = quizUrl.href;
   previewLink.href = quizUrl.href;
