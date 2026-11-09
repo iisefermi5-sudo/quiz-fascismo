@@ -55,7 +55,7 @@ window.postQuizRequest = (endpoint, payload) => new Promise((resolve, reject) =>
 
   const timeout = window.setTimeout(() => {
     cleanUp();
-    reject(new Error("Google Sheets non ha risposto. Verifica il link della web app e la distribuzione Apps Script."));
+    reject(new Error("Apps Script non ha restituito una risposta. Verifica che l’URL termini in /exec, che l’accesso sia impostato su “Chiunque” e che il deployment usi la versione aggiornata di Code.gs."));
   }, 30000);
 
   window.addEventListener("message", onMessage);

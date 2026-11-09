@@ -10,6 +10,10 @@ const RESPONSE_HEADERS = [
   "Risposte"
 ];
 
+function doGet() {
+  return ContentService.createTextOutput("Endpoint quiz attivo. Puoi chiudere questa pagina.");
+}
+
 function doPost(event) {
   let payload;
   try {
@@ -99,7 +103,11 @@ function sendMessage_(nonce, result) {
   const message = JSON.stringify({ ...result, nonce: String(nonce || "") })
     .replace(/</g, "\\u003c");
   const html = `<!doctype html><html><head><meta charset="utf-8"></head><body>
-    <script>window.parent.postMessage(${message}, "*");</script>
+    <script>
+      const response = ${message};
+      window.parent.postMessage(response, "*");
+      if (window.top !== window.parent) window.top.postMessage(response, "*");
+    </script>
     <p>Richiesta completata. Puoi tornare alla pagina del quiz.</p>
   </body></html>`;
   return HtmlService.createHtmlOutput(html)

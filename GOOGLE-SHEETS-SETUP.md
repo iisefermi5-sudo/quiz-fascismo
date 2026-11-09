@@ -27,7 +27,7 @@ Conservalo in un gestore password: servirà per consultare i risultati.
 2. Scegli il tipo **App web**.
 3. Imposta **Esegui come: me** e **Chi può accedere: chiunque**. L'accesso pubblico è necessario perché i partecipanti non devono autenticarsi per inviare le risposte.
 4. Premi **Esegui il deployment**, autorizza lo script e copia l'URL che termina in `/exec`.
-5. Se modifichi il codice Apps Script in seguito, crea una nuova versione del deployment.
+5. Apri l'URL `/exec` in una scheda del browser: deve mostrare `Endpoint quiz attivo`. Se modifichi il codice Apps Script in seguito, vai in **Gestisci deployment > Modifica**, seleziona **Nuova versione** e distribuisci l'aggiornamento mantenendo lo stesso URL.
 
 Il foglio resta privato e il codice docente è necessario per leggere i risultati. La web app accetta invii pubblici: usala per quiz a basso rischio, non per esami o dati sensibili. I contenuti e le risposte corrette nel link non sono protetti da manomissioni.
 
