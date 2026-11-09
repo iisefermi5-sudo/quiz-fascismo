@@ -8,6 +8,7 @@ GitHub Pages ospita il sito, ma non può salvare risposte. Per raccoglierle serv
 2. Non condividere il foglio con i partecipanti: deve rimanere privato.
 3. Dal foglio apri **Estensioni > Apps Script**.
 4. Sostituisci il contenuto di `Code.gs` con quello di [`google-apps-script/Code.gs`](./google-apps-script/Code.gs) e salva.
+5. Copia l'ID del foglio dall'URL: è la parte tra `/d/` e `/edit` (ad esempio `https://docs.google.com/spreadsheets/d/ID_DEL_FOGLIO/edit`).
 
 Lo script crea automaticamente una scheda `Risposte` al primo invio.
 
@@ -17,7 +18,10 @@ Lo script crea automaticamente una scheda `Risposte` al primo invio.
 2. Nella sezione **Proprietà script**, aggiungi:
    - Proprietà: `ADMIN_TOKEN`
    - Valore: una password casuale lunga almeno 32 caratteri.
-3. Non inserire questo codice nel sito, nel repository o nei link dei quiz.
+3. Aggiungi anche:
+   - Proprietà: `SPREADSHEET_ID`
+   - Valore: l'ID copiato dall'URL del foglio.
+4. Non inserire il codice docente nel sito, nel repository o nei link dei quiz.
 
 Conservalo in un gestore password: servirà per consultare i risultati.
 

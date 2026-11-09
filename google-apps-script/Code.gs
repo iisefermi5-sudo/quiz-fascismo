@@ -28,7 +28,9 @@ function doPost(event) {
     console.error(error);
     return sendMessage_(payload && payload.nonce, {
       ok: false,
-      error: "Impossibile elaborare la richiesta. Controlla la configurazione del foglio."
+      error: error && error.message === "SPREADSHEET_ID_NOT_CONFIGURED"
+        ? "Foglio Google non configurato: aggiungi la proprietà script SPREADSHEET_ID con l’ID del foglio."
+        : "Errore durante l’accesso al foglio Google. Controlla l’ID, le autorizzazioni e la scheda Risposte."
     });
   }
 }
@@ -87,9 +89,10 @@ function readSubmissions_(payload) {
 }
 
 function getResponseSheet_() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-  if (!spreadsheet) throw new Error("Lo script deve essere collegato a un foglio Google.");
+  const spreadsheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  if (!spreadsheetId) throw new Error("SPREADSHEET_ID_NOT_CONFIGURED");
 
+  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
   let sheet = spreadsheet.getSheetByName(RESPONSE_SHEET_NAME);
   if (!sheet) sheet = spreadsheet.insertSheet(RESPONSE_SHEET_NAME);
   if (sheet.getLastRow() === 0) {
