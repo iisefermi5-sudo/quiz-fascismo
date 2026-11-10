@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#111714">
   <title>Gestione quiz | Quiz di storia</title>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <main class="page manager-page">
@@ -16,23 +16,6 @@
       <a class="admin-link" href="index.html">Torna alla pagina iniziale</a>
     </header>
 
-    <section class="backend-settings" aria-labelledby="backend-heading">
-      <h2 id="backend-heading">Risposte dei partecipanti</h2>
-      <p>La raccolta su Google Sheets è già configurata. Il codice docente serve solo per leggere i risultati e non viene salvato nel browser.</p>
-      <div class="backend-actions">
-        <label class="form-field admin-code-field" for="admin-token">
-          Codice docente
-          <input id="admin-token" type="password" autocomplete="off">
-        </label>
-        <button class="secondary-button" id="load-responses" type="button">Mostra risposte</button>
-      </div>
-      <p class="save-status" id="backend-status" role="status" aria-live="polite"></p>
-      <section id="responses-panel" class="responses-panel" aria-label="Risposte dei partecipanti" hidden>
-        <h3>Risposte ricevute</h3>
-        <div id="responses-list"></div>
-      </section>
-    </section>
-
     <div class="manager-layout">
       <aside class="quiz-library" aria-label="I miei quiz">
         <div class="library-heading">
@@ -40,7 +23,7 @@
           <button class="secondary-button" id="new-quiz" type="button">Nuovo</button>
         </div>
         <nav class="quiz-list" id="quiz-list" aria-label="Seleziona un quiz"></nav>
-        <p class="storage-note">I quiz salvati sono disponibili solo in questo browser. Con Google Sheets collegato, le risposte inviate vengono raccolte nel tuo foglio.</p>
+        <p class="storage-note">I quiz salvati sono disponibili solo in questo browser. Le risposte dei partecipanti sono nella scheda “Risposte” del foglio Google collegato.</p>
       </aside>
 
       <section class="manager-editor" aria-label="Editor del quiz">
@@ -94,8 +77,8 @@
     </div>
   </main>
 
-  <script src="apps-script-client.js?v=6" defer></script>
+  <script src="apps-script-client.js?v=8" defer></script>
   <script src="script.js?v=4" defer></script>
-  <script src="gestione.js?v=5" defer></script>
+  <script src="gestione.js?v=7" defer></script>
 </body>
 </html>

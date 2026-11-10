@@ -11,10 +11,6 @@ const saveStatus = document.getElementById("save-status");
 const sharePanel = document.getElementById("share-panel");
 const shareUrlInput = document.getElementById("share-url");
 const previewLink = document.getElementById("open-preview");
-const adminTokenInput = document.getElementById("admin-token");
-const backendStatus = document.getElementById("backend-status");
-const responsesPanel = document.getElementById("responses-panel");
-const responsesList = document.getElementById("responses-list");
 
 function cloneQuiz(quiz) {
   return JSON.parse(JSON.stringify(quiz));
@@ -279,101 +275,6 @@ function encodeQuiz(quiz) {
   }
   return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
-
-function renderResponses(submissions) {
-  responsesList.replaceChildren();
-  if (submissions.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "save-status";
-    empty.textContent = "Non sono ancora arrivate risposte per questo quiz.";
-    responsesList.append(empty);
-    return;
-  }
-
-  submissions.forEach((submission) => {
-    const card = document.createElement("article");
-    card.className = "response-card";
-    const heading = document.createElement("div");
-    heading.className = "response-heading";
-    const participant = document.createElement("h4");
-    participant.textContent = `${submission.firstName} ${submission.lastName}`;
-    const score = document.createElement("strong");
-    score.className = "response-score";
-    score.textContent = `${submission.score} / ${submission.total}`;
-    heading.append(participant, score);
-    card.append(heading);
-
-    const submittedAt = document.createElement("p");
-    submittedAt.className = "response-date";
-    const date = new Date(submission.submittedAt);
-    submittedAt.textContent = Number.isNaN(date.getTime())
-      ? "Data non disponibile"
-      : date.toLocaleString("it-IT");
-    card.append(submittedAt);
-
-    const details = document.createElement("details");
-    const summary = document.createElement("summary");
-    summary.textContent = "Vedi le risposte";
-    const list = document.createElement("ol");
-    list.className = "response-answers";
-    submission.answers.forEach((answer) => {
-      const item = document.createElement("li");
-      const question = document.createElement("strong");
-      question.textContent = answer.question;
-      const selected = document.createElement("p");
-      selected.textContent = `Risposta data: ${answer.selectedAnswer}`;
-      const correct = document.createElement("p");
-      correct.className = answer.isCorrect ? "response-correct" : "response-incorrect";
-      correct.textContent = answer.isCorrect
-        ? "Corretta"
-        : `Corretta: ${answer.correctAnswer}`;
-      item.append(question, selected, correct);
-      list.append(item);
-    });
-    details.append(summary, list);
-    card.append(details);
-    responsesList.append(card);
-  });
-}
-
-document.getElementById("load-responses").addEventListener("click", async () => {
-  const quiz = getActiveQuiz();
-  const adminToken = adminTokenInput.value;
-  adminTokenInput.value = "";
-  responsesPanel.hidden = true;
-
-  if (!quiz) {
-    backendStatus.textContent = "Seleziona un quiz per consultare i risultati.";
-    return;
-  }
-  if (!window.isGoogleAppsScriptUrl(window.appsScriptEndpoint)) {
-    backendStatus.textContent = "Configurazione Apps Script non valida. Contatta il responsabile del sito.";
-    return;
-  }
-  if (!adminToken) {
-    backendStatus.textContent = "Inserisci il codice docente configurato in Apps Script.";
-    return;
-  }
-
-  backendStatus.textContent = "Caricamento delle risposte…";
-  const loadButton = document.getElementById("load-responses");
-  loadButton.disabled = true;
-  try {
-    const result = await window.postQuizRequest(window.appsScriptEndpoint, {
-      action: "results",
-      quizId: quiz.id,
-      adminToken
-    });
-    renderResponses(result.submissions);
-    responsesPanel.hidden = false;
-    backendStatus.textContent = `${result.submissions.length} risposte trovate per “${quiz.title}”.`;
-  } catch (error) {
-    backendStatus.textContent = `Impossibile caricare le risposte: ${error.message}`;
-    console.error(error);
-  } finally {
-    loadButton.disabled = false;
-  }
-});
 
 titleInput.addEventListener("input", () => {
   const quiz = getActiveQuiz();

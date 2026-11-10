@@ -1,44 +1,19 @@
-# Configurare la raccolta dei risultati
+# Raccolta e consultazione dei risultati
 
-GitHub Pages ospita il sito, ma non può salvare risposte. Per raccoglierle serve collegare un Google Sheet tramite Apps Script.
+Il sito invia automaticamente le risposte completate al foglio Google collegato tramite Apps Script. Il foglio deve restare privato: partecipanti e altri utenti non devono avere accesso al file.
 
-## 1. Crea il foglio privato
+## Dove trovare le risposte
 
-1. Crea un nuovo foglio in Google Sheets con il tuo account.
-2. Non condividere il foglio con i partecipanti: deve rimanere privato.
-3. Dal foglio apri **Estensioni > Apps Script**.
-4. Sostituisci il contenuto di `Code.gs` con quello di [`google-apps-script/Code.gs`](./google-apps-script/Code.gs) e salva.
-5. Copia l'ID del foglio dall'URL: è la parte tra `/d/` e `/edit` (ad esempio `https://docs.google.com/spreadsheets/d/ID_DEL_FOGLIO/edit`).
+Apri il foglio Google dal tuo account e consulta la scheda **Risposte**. Ogni riga contiene data, quiz, nome, cognome, punteggio e dettagli delle risposte. La gestione del sito non richiede un codice docente: i risultati si controllano direttamente nel foglio.
 
-Lo script crea automaticamente una scheda `Risposte` al primo invio.
+## Configurazione Apps Script
 
-## 2. Imposta il codice docente
+Nel progetto Apps Script collegato al foglio, la proprietà script `SPREADSHEET_ID` deve contenere l'ID del foglio (la parte dell'URL tra `/d/` e `/edit`). La web app deve essere distribuita con **Esegui come: me** e **Chi può accedere: chiunque**, così i partecipanti possono inviare i risultati senza autenticarsi. Il foglio rimane privato.
 
-1. In Apps Script apri **Impostazioni progetto**.
-2. Nella sezione **Proprietà script**, aggiungi:
-   - Proprietà: `ADMIN_TOKEN`
-   - Valore: una password casuale lunga almeno 32 caratteri.
-3. Aggiungi anche:
-   - Proprietà: `SPREADSHEET_ID`
-   - Valore: l'ID copiato dall'URL del foglio.
-4. Non inserire il codice docente nel sito, nel repository o nei link dei quiz.
+L'URL della web app è già configurato nel sito. Se viene creato un deployment con URL diverso, il responsabile del sito deve aggiornare l'endpoint e pubblicare una nuova versione del sito. Per modificare il codice Apps Script, pubblicare una nuova versione da **Gestisci deployment** mantenendo lo stesso URL.
 
-Conservalo in un gestore password: servirà per consultare i risultati.
+## Nuovi quiz
 
-## 3. Pubblica la web app
+Apri la [gestione quiz](https://iisefermi5-sudo.github.io/quiz-fascismo/gestione.html), crea il link condivisibile e invialo ai partecipanti. I link generati prima di un cambio di endpoint devono essere creati di nuovo.
 
-1. In Apps Script seleziona **Esegui il deployment > Nuovo deployment**.
-2. Scegli il tipo **App web**.
-3. Imposta **Esegui come: me** e **Chi può accedere: chiunque**. L'accesso pubblico è necessario perché i partecipanti non devono autenticarsi per inviare le risposte.
-4. Premi **Esegui il deployment**, autorizza lo script e copia l'URL che termina in `/exec`.
-5. Apri l'URL `/exec` in una scheda del browser: deve mostrare `Endpoint quiz attivo`. Se modifichi il codice Apps Script in seguito, vai in **Gestisci deployment > Modifica**, seleziona **Nuova versione** e distribuisci l'aggiornamento mantenendo lo stesso URL. Se crei un deployment con un URL diverso, il responsabile del sito deve aggiornare l'endpoint configurato nell'app e pubblicare il sito.
-
-Il foglio resta privato e il codice docente è necessario per leggere i risultati. La web app accetta invii pubblici: usala per quiz a basso rischio, non per esami o dati sensibili. I contenuti e le risposte corrette nel link non sono protetti da manomissioni.
-
-## 4. Usa il sito
-
-L'URL della web app è già configurato nell'app: non occorre inserirlo nella gestione. Apri la [gestione quiz](https://iisefermi5-sudo.github.io/quiz-fascismo/gestione.html), seleziona un quiz e premi **Crea link condivisibile**. I nuovi link inviano le risposte al foglio collegato.
-
-Per vedere i risultati, seleziona lo stesso quiz, inserisci il `ADMIN_TOKEN` e premi **Mostra risposte**. Il codice non viene salvato dal browser.
-
-I partecipanti inseriscono nome e cognome e devono accettare l'informativa prima di iniziare. Il foglio registra data, quiz, punteggio e risposta data a ogni domanda.
+I partecipanti inseriscono nome e cognome e accettano l'informativa prima di iniziare. La raccolta pubblica e le risposte corrette contenute nel link rendono il sistema adatto a quiz didattici informali, non a esami con valutazione vincolante o dati sensibili.
