@@ -6,8 +6,7 @@ const RESPONSE_HEADERS = [
   "Nome",
   "Cognome",
   "Punteggio",
-  "Totale",
-  "Risposte"
+  "Totale"
 ];
 
 function doGet() {
@@ -50,6 +49,8 @@ function doPost(event) {
             ? "Non riesco a scrivere nel foglio. Controlla i permessi di modifica e le protezioni della scheda Risposte."
             : errorCode === "RESPONSE_SHEET_SETUP_FAILED"
               ? "Non riesco a preparare la scheda Risposte. Controlla i permessi di modifica del foglio."
+              : errorCode === "QUESTION_COLUMN_CONFLICT"
+                ? "Le colonne delle domande nel foglio non corrispondono. Non sono state aggiunte nuove risposte."
               : "Errore durante l’accesso al foglio Google. Controlla l’ID, le autorizzazioni e la scheda Risposte."
     });
   }
@@ -69,18 +70,30 @@ function saveSubmission_(payload) {
   const score = answers.filter((answer) => answer.isCorrect).length;
   const sheet = getResponseSheet_();
   try {
-    sheet.appendRow([
+    const firstQuestionColumn = ensureQuestionColumns_(sheet, answers.length);
+    const row = new Array(sheet.getLastColumn()).fill("");
+    row.splice(0, 7,
       new Date(),
       safeCell_(payload.quizId),
       safeCell_(payload.quizTitle),
       safeCell_(payload.firstName),
       safeCell_(payload.lastName),
       score,
-      answers.length,
-      JSON.stringify(answers)
-    ]);
+      answers.length
+    );
+    answers.forEach((answer, index) => {
+      row[firstQuestionColumn - 1 + index] = safeCell_([
+        `Domanda: ${answer.question}`,
+        `Risposta scelta: ${answer.selectedAnswer}`,
+        `Esito: ${answer.isCorrect ? "Corretta" : "Errata"}`,
+        `Risposta corretta: ${answer.correctAnswer}`
+      ].join("\n"));
+    });
+    sheet.appendRow(row);
   } catch (error) {
     console.error(error);
+    if (error && error.message === "QUESTION_COLUMN_CONFLICT") throw error;
+    if (error && error.message === "RESPONSE_SHEET_SETUP_FAILED") throw error;
     throw new Error("RESPONSE_SAVE_FAILED");
   }
   return { ok: true };
@@ -133,6 +146,38 @@ function getResponseSheet_() {
     }
     return sheet;
   } catch (error) {
+    console.error(error);
+    throw new Error("RESPONSE_SHEET_SETUP_FAILED");
+  }
+}
+
+function ensureQuestionColumns_(sheet, questionCount) {
+  try {
+    const lastColumn = sheet.getLastColumn();
+    const headers = sheet.getRange(1, 1, 1, lastColumn).getValues()[0];
+    const legacyAnswersColumn = headers.indexOf("Risposte");
+    const firstQuestionColumn = legacyAnswersColumn >= 0
+      ? legacyAnswersColumn + 2
+      : RESPONSE_HEADERS.length + 1;
+    const neededLastColumn = firstQuestionColumn + questionCount - 1;
+
+    if (lastColumn < neededLastColumn) {
+      sheet.insertColumnsAfter(lastColumn, neededLastColumn - lastColumn);
+    }
+
+    for (let index = 0; index < questionCount; index += 1) {
+      const column = firstQuestionColumn + index;
+      const expectedHeader = `Domanda ${index + 1}`;
+      const currentHeader = headers[column - 1];
+      if (currentHeader && currentHeader !== expectedHeader) {
+        throw new Error("QUESTION_COLUMN_CONFLICT");
+      }
+      if (!currentHeader) sheet.getRange(1, column).setValue(expectedHeader);
+    }
+
+    return firstQuestionColumn;
+  } catch (error) {
+    if (error && error.message === "QUESTION_COLUMN_CONFLICT") throw error;
     console.error(error);
     throw new Error("RESPONSE_SHEET_SETUP_FAILED");
   }

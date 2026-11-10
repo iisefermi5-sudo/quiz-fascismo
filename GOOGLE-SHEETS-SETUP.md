@@ -4,7 +4,9 @@ Il sito invia automaticamente le risposte completate al foglio Google collegato 
 
 ## Dove trovare le risposte
 
-Apri il foglio Google dal tuo account e consulta la scheda **Risposte**. Ogni riga contiene data, quiz, nome, cognome, punteggio e dettagli delle risposte. La gestione del sito non richiede un codice docente: i risultati si controllano direttamente nel foglio.
+Apri il foglio Google dal tuo account e consulta la scheda **Risposte**. Ogni riga contiene data, quiz, nome, cognome e punteggio; dopo le colonne riassuntive trovi una colonna **Domanda 1**, **Domanda 2** e così via. In ogni cella sono riportati il testo della domanda, la risposta scelta, l'esito e la risposta corretta. La gestione del sito non richiede un codice docente: i risultati si controllano direttamente nel foglio.
+
+Se il foglio contiene già dati salvati con la versione precedente, la colonna JSON **Risposte** viene mantenuta per la cronologia; le nuove risposte per domanda vengono aggiunte nelle colonne successive.
 
 ## Configurazione Apps Script
 
