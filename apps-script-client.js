@@ -1,6 +1,6 @@
 "use strict";
 
-window.appsScriptEndpoint = "https://script.google.com/macros/s/AKfycbymWoSrpseNpBthxqJUbVp9LM4aRw2hqlgn-at2N2cSWFlF7DEkj5UPrDoUYHlcZVK8/exec";
+window.appsScriptEndpoint = "https://script.google.com/macros/s/AKfycbzCRcUSHbs2-gmd3fu1pAnUPBw9FDFYJLGCdQKTz1aVgPiuGnnnx01f2frs3njl0CAp/exec";
 
 window.isGoogleAppsScriptUrl = (value) => {
   try {
