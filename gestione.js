@@ -1,7 +1,6 @@
 "use strict";
 
 const storageKey = "quiz-fascismo.saved-quizzes";
-const backendStorageKey = "quiz-fascismo.apps-script-url";
 const quizListElement = document.getElementById("quiz-list");
 const editorElement = document.getElementById("editor");
 const emptyStateElement = document.getElementById("empty-state");
@@ -12,7 +11,6 @@ const saveStatus = document.getElementById("save-status");
 const sharePanel = document.getElementById("share-panel");
 const shareUrlInput = document.getElementById("share-url");
 const previewLink = document.getElementById("open-preview");
-const backendUrlInput = document.getElementById("apps-script-url");
 const adminTokenInput = document.getElementById("admin-token");
 const backendStatus = document.getElementById("backend-status");
 const responsesPanel = document.getElementById("responses-panel");
@@ -260,9 +258,6 @@ function renderEditor() {
 }
 
 function validateQuiz(quiz) {
-  if (!window.isGoogleAppsScriptUrl(backendUrlInput.value.trim())) {
-    return "Collega prima la web app di Google Apps Script per raccogliere i risultati.";
-  }
   if (!quiz.title.trim()) return "Inserisci un titolo per il quiz.";
   if (quiz.questions.length === 0) return "Aggiungi almeno una domanda.";
   for (const [index, item] of quiz.questions.entries()) {
@@ -341,32 +336,8 @@ function renderResponses(submissions) {
   });
 }
 
-try {
-  backendUrlInput.value = localStorage.getItem(backendStorageKey) || "";
-} catch (error) {
-  backendStatus.textContent = "Impossibile leggere la configurazione dal browser.";
-  console.error(error);
-}
-
-document.getElementById("save-backend").addEventListener("click", () => {
-  const endpoint = backendUrlInput.value.trim();
-  if (!window.isGoogleAppsScriptUrl(endpoint)) {
-    backendStatus.textContent = "Inserisci l’URL /exec di una web app Google Apps Script.";
-    return;
-  }
-  try {
-    localStorage.setItem(backendStorageKey, endpoint);
-    backendUrlInput.value = endpoint;
-    backendStatus.textContent = "Google Sheets collegato. Crea ora un nuovo link da assegnare.";
-  } catch (error) {
-    backendStatus.textContent = "Impossibile salvare la configurazione in questo browser.";
-    console.error(error);
-  }
-});
-
 document.getElementById("load-responses").addEventListener("click", async () => {
   const quiz = getActiveQuiz();
-  const endpoint = backendUrlInput.value.trim();
   const adminToken = adminTokenInput.value;
   adminTokenInput.value = "";
   responsesPanel.hidden = true;
@@ -375,8 +346,8 @@ document.getElementById("load-responses").addEventListener("click", async () => 
     backendStatus.textContent = "Seleziona un quiz per consultare i risultati.";
     return;
   }
-  if (!window.isGoogleAppsScriptUrl(endpoint)) {
-    backendStatus.textContent = "Inserisci e salva prima l’URL della web app Apps Script.";
+  if (!window.isGoogleAppsScriptUrl(window.appsScriptEndpoint)) {
+    backendStatus.textContent = "Configurazione Apps Script non valida. Contatta il responsabile del sito.";
     return;
   }
   if (!adminToken) {
@@ -388,7 +359,7 @@ document.getElementById("load-responses").addEventListener("click", async () => 
   const loadButton = document.getElementById("load-responses");
   loadButton.disabled = true;
   try {
-    const result = await window.postQuizRequest(endpoint, {
+    const result = await window.postQuizRequest(window.appsScriptEndpoint, {
       action: "results",
       quizId: quiz.id,
       adminToken
@@ -463,7 +434,7 @@ document.getElementById("share-quiz").addEventListener("click", () => {
     id: quiz.id,
     title: quiz.title.trim(),
     intro: quiz.intro.trim(),
-    submissionEndpoint: backendUrlInput.value.trim(),
+    submissionEndpoint: window.appsScriptEndpoint,
     questions: quiz.questions
   };
   const quizUrl = new URL("quiz.html", window.location.href);

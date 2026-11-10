@@ -31,16 +31,14 @@ Conservalo in un gestore password: servirà per consultare i risultati.
 2. Scegli il tipo **App web**.
 3. Imposta **Esegui come: me** e **Chi può accedere: chiunque**. L'accesso pubblico è necessario perché i partecipanti non devono autenticarsi per inviare le risposte.
 4. Premi **Esegui il deployment**, autorizza lo script e copia l'URL che termina in `/exec`.
-5. Apri l'URL `/exec` in una scheda del browser: deve mostrare `Endpoint quiz attivo`. Se modifichi il codice Apps Script in seguito, vai in **Gestisci deployment > Modifica**, seleziona **Nuova versione** e distribuisci l'aggiornamento mantenendo lo stesso URL.
+5. Apri l'URL `/exec` in una scheda del browser: deve mostrare `Endpoint quiz attivo`. Se modifichi il codice Apps Script in seguito, vai in **Gestisci deployment > Modifica**, seleziona **Nuova versione** e distribuisci l'aggiornamento mantenendo lo stesso URL. Se crei un deployment con un URL diverso, il responsabile del sito deve aggiornare l'endpoint configurato nell'app e pubblicare il sito.
 
 Il foglio resta privato e il codice docente è necessario per leggere i risultati. La web app accetta invii pubblici: usala per quiz a basso rischio, non per esami o dati sensibili. I contenuti e le risposte corrette nel link non sono protetti da manomissioni.
 
-## 4. Collega il sito
+## 4. Usa il sito
 
-1. Apri la [gestione quiz](https://iisefermi5-sudo.github.io/quiz-fascismo/gestione.html).
-2. Incolla l'URL `/exec` e premi **Salva URL**.
-3. Seleziona un quiz e premi **Crea link condivisibile**.
-4. Invia il nuovo link ai partecipanti. I link creati prima di collegare Apps Script non inviano risposte.
-5. Per vedere i risultati, seleziona lo stesso quiz, inserisci il `ADMIN_TOKEN` e premi **Mostra risposte**. Il codice non viene salvato dal browser.
+L'URL della web app è già configurato nell'app: non occorre inserirlo nella gestione. Apri la [gestione quiz](https://iisefermi5-sudo.github.io/quiz-fascismo/gestione.html), seleziona un quiz e premi **Crea link condivisibile**. I nuovi link inviano le risposte al foglio collegato.
+
+Per vedere i risultati, seleziona lo stesso quiz, inserisci il `ADMIN_TOKEN` e premi **Mostra risposte**. Il codice non viene salvato dal browser.
 
 I partecipanti inseriscono nome e cognome e devono accettare l'informativa prima di iniziare. Il foglio registra data, quiz, punteggio e risposta data a ogni domanda.

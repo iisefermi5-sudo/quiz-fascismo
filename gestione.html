@@ -12,19 +12,14 @@
     <header>
       <p class="eyebrow">Area di gestione</p>
       <h1>Crea il tuo quiz</h1>
-      <p class="intro">Aggiungi domande, risposte e spiegazioni. Collega Google Sheets per raccogliere i risultati dei partecipanti.</p>
+      <p class="intro">Aggiungi domande, risposte e spiegazioni. I risultati vengono raccolti automaticamente nel foglio Google collegato.</p>
       <a class="admin-link" href="index.html">Torna alla pagina iniziale</a>
     </header>
 
     <section class="backend-settings" aria-labelledby="backend-heading">
-      <h2 id="backend-heading">Collega Google Sheets</h2>
-      <p>Le risposte dei partecipanti saranno salvate in un foglio Google privato. Il codice docente serve per leggere i risultati e non viene salvato nel browser.</p>
-      <label class="form-field" for="apps-script-url">
-        URL della web app Apps Script
-        <input id="apps-script-url" type="url" autocomplete="url" placeholder="https://script.google.com/macros/s/…/exec">
-      </label>
+      <h2 id="backend-heading">Risposte dei partecipanti</h2>
+      <p>La raccolta su Google Sheets è già configurata. Il codice docente serve solo per leggere i risultati e non viene salvato nel browser.</p>
       <div class="backend-actions">
-        <button class="secondary-button" id="save-backend" type="button">Salva URL</button>
         <label class="form-field admin-code-field" for="admin-token">
           Codice docente
           <input id="admin-token" type="password" autocomplete="off">
@@ -99,8 +94,8 @@
     </div>
   </main>
 
-  <script src="apps-script-client.js?v=5" defer></script>
+  <script src="apps-script-client.js?v=6" defer></script>
   <script src="script.js?v=4" defer></script>
-  <script src="gestione.js?v=4" defer></script>
+  <script src="gestione.js?v=5" defer></script>
 </body>
 </html>
