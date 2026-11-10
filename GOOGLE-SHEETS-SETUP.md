@@ -12,6 +12,8 @@ Nel progetto Apps Script collegato al foglio, la proprietà script `SPREADSHEET_
 
 L'URL della web app è già configurato nel sito. Se viene creato un deployment con URL diverso, il responsabile del sito deve aggiornare l'endpoint e pubblicare una nuova versione del sito. Per modificare il codice Apps Script, pubblicare una nuova versione da **Gestisci deployment** mantenendo lo stesso URL.
 
+Se un invio segnala un problema con il foglio, apri Apps Script, seleziona `testSpreadsheetAccess` e premi **Esegui**. Nei log deve comparire il nome del foglio. Se l'esecuzione fallisce, controlla `SPREADSHEET_ID` e che il proprietario selezionato in **Esegui come** possa modificare il foglio. Per applicare i messaggi d'errore più precisi, copia il `Code.gs` aggiornato e pubblica una nuova versione del deployment.
+
 ## Nuovi quiz
 
 Apri la [gestione quiz](https://iisefermi5-sudo.github.io/quiz-fascismo/gestione.html), crea il link condivisibile e invialo ai partecipanti. I link generati prima di un cambio di endpoint devono essere creati di nuovo.

@@ -194,7 +194,7 @@ function showResult() {
       submissionStatus.textContent = "Risposte inviate al creatore del quiz.";
     }).catch((error) => {
       submissionStatus.textContent = `Invio non riuscito: ${error.message}`;
-      resultCopyElement.textContent += " Avvisa il creatore e non chiudere la pagina finché non hai verificato l’invio.";
+      resultCopyElement.textContent += " Avvisa il creatore; il risultato potrebbe non essere stato registrato.";
     });
   }
 }

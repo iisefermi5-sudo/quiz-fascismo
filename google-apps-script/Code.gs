@@ -14,6 +14,19 @@ function doGet() {
   return ContentService.createTextOutput("Endpoint quiz attivo. Puoi chiudere questa pagina.");
 }
 
+function testSpreadsheetAccess() {
+  const spreadsheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
+  if (!spreadsheetId) throw new Error("Aggiungi SPREADSHEET_ID nelle proprietà script.");
+
+  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+  const sheet = spreadsheet.getSheetByName(RESPONSE_SHEET_NAME);
+  const message = sheet
+    ? `Foglio accessibile: ${spreadsheet.getName()}; scheda ${RESPONSE_SHEET_NAME} presente.`
+    : `Foglio accessibile: ${spreadsheet.getName()}; la scheda ${RESPONSE_SHEET_NAME} verrà creata al primo invio.`;
+  console.log(message);
+  return message;
+}
+
 function doPost(event) {
   let payload;
   try {
@@ -26,11 +39,18 @@ function doPost(event) {
     return sendMessage_(payload.nonce, result);
   } catch (error) {
     console.error(error);
+    const errorCode = error && error.message;
     return sendMessage_(payload && payload.nonce, {
       ok: false,
-      error: error && error.message === "SPREADSHEET_ID_NOT_CONFIGURED"
+      error: errorCode === "SPREADSHEET_ID_NOT_CONFIGURED"
         ? "Foglio Google non configurato: aggiungi la proprietà script SPREADSHEET_ID con l’ID del foglio."
-        : "Errore durante l’accesso al foglio Google. Controlla l’ID, le autorizzazioni e la scheda Risposte."
+        : errorCode === "SPREADSHEET_ACCESS_FAILED"
+          ? "Accesso al foglio negato. Verifica SPREADSHEET_ID e che il proprietario del deployment possa modificare il foglio."
+          : errorCode === "RESPONSE_SAVE_FAILED"
+            ? "Non riesco a scrivere nel foglio. Controlla i permessi di modifica e le protezioni della scheda Risposte."
+            : errorCode === "RESPONSE_SHEET_SETUP_FAILED"
+              ? "Non riesco a preparare la scheda Risposte. Controlla i permessi di modifica del foglio."
+              : "Errore durante l’accesso al foglio Google. Controlla l’ID, le autorizzazioni e la scheda Risposte."
     });
   }
 }
@@ -48,16 +68,21 @@ function saveSubmission_(payload) {
 
   const score = answers.filter((answer) => answer.isCorrect).length;
   const sheet = getResponseSheet_();
-  sheet.appendRow([
-    new Date(),
-    safeCell_(payload.quizId),
-    safeCell_(payload.quizTitle),
-    safeCell_(payload.firstName),
-    safeCell_(payload.lastName),
-    score,
-    answers.length,
-    JSON.stringify(answers)
-  ]);
+  try {
+    sheet.appendRow([
+      new Date(),
+      safeCell_(payload.quizId),
+      safeCell_(payload.quizTitle),
+      safeCell_(payload.firstName),
+      safeCell_(payload.lastName),
+      score,
+      answers.length,
+      JSON.stringify(answers)
+    ]);
+  } catch (error) {
+    console.error(error);
+    throw new Error("RESPONSE_SAVE_FAILED");
+  }
   return { ok: true };
 }
 
@@ -92,14 +117,25 @@ function getResponseSheet_() {
   const spreadsheetId = PropertiesService.getScriptProperties().getProperty("SPREADSHEET_ID");
   if (!spreadsheetId) throw new Error("SPREADSHEET_ID_NOT_CONFIGURED");
 
-  const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
-  let sheet = spreadsheet.getSheetByName(RESPONSE_SHEET_NAME);
-  if (!sheet) sheet = spreadsheet.insertSheet(RESPONSE_SHEET_NAME);
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(RESPONSE_HEADERS);
-    sheet.setFrozenRows(1);
+  let spreadsheet;
+  try {
+    spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+  } catch (error) {
+    console.error(error);
+    throw new Error("SPREADSHEET_ACCESS_FAILED");
   }
-  return sheet;
+  try {
+    let sheet = spreadsheet.getSheetByName(RESPONSE_SHEET_NAME);
+    if (!sheet) sheet = spreadsheet.insertSheet(RESPONSE_SHEET_NAME);
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(RESPONSE_HEADERS);
+      sheet.setFrozenRows(1);
+    }
+    return sheet;
+  } catch (error) {
+    console.error(error);
+    throw new Error("RESPONSE_SHEET_SETUP_FAILED");
+  }
 }
 
 function sendMessage_(nonce, result) {
